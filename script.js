@@ -73,3 +73,10 @@ const getWeather = async (city) => {
         showError(err.message);
     }
 };
+
+
+
+// EVENT LISTENERS
+
+DOM.searchBtn.addEventListener("click", () => getWeather(DOM.cityInput.value.trim()));
+DOM.cityInput.addEventListener("keypress", (e) => { if (e.key === "Enter") DOM.searchBtn.click(); });   

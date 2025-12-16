@@ -117,6 +117,13 @@ const addToFavorites = (city) => {
     }
 };
 
+const removeFromFavorites = (city) => {
+    let favorites = loadFavoritesFromStorage();
+    favorites = favorites.filter(c => c !== city);
+    saveFavorites(favorites);
+    renderFavorites();
+};
+
 // EVENT LISTENERS
 
 DOM.searchBtn.addEventListener("click", () => getWeather(DOM.cityInput.value.trim()));

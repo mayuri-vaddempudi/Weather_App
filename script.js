@@ -132,4 +132,6 @@ const renderFavorites = () => {
 // EVENT LISTENERS
 
 DOM.searchBtn.addEventListener("click", () => getWeather(DOM.cityInput.value.trim()));
-DOM.cityInput.addEventListener("keypress", (e) => { if (e.key === "Enter") DOM.searchBtn.click(); });
+DOM.cityInput.addEventListener("keypress", (e) => { if (e.key === "Enter") DOM.searchBtn.click(); });  
+DOM.favBtn.addEventListener("click", () => addToFavorites(DOM.cityName.textContent));  
+document.addEventListener("DOMContentLoaded", renderFavorites);  

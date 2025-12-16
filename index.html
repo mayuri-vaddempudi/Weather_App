@@ -15,7 +15,24 @@
     <p>Type a city to view current weather and 3-day forecast</p>
   </header>
 
-  <main class="container"></main>
+  <main class="container">
+        <div class="search">
+            <input type="text" id="cityInput" placeholder="Type a city">
+            <button id="searchBtn">Search</button>
+        </div>
+ 
+        <div id="errorMsg" class="error"></div>
+ 
+        <div id="weatherBox" class="hidden">
+            <h2 id="cityName"></h2>
+            <img id="weatherIcon" alt="">
+            <p id="temperature"></p>
+            <p id="humidity"></p>
+            <p id="wind"></p>
+            <p id="condition"></p>
+            <button id="favBtn">⭐ Add to Favorites</button>
+        </div>
+  </main>
 
   <footer>
     <p>© 2025 Sweden Weather App. All rights reserved.</p>

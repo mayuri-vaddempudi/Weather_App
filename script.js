@@ -42,3 +42,34 @@ const saveFavorites = (favorites) => {
 const loadFavoritesFromStorage = () => {
     return JSON.parse(localStorage.getItem("favorites")) || [];
 };
+// WEATHER FUNCTIONS 
+
+const getWeather = async (city) => {
+    if (!city) return;
+
+    clearError();
+    DOM.weatherBox.classList.add("hidden");
+    DOM.forecastBox.classList.add("hidden");
+    DOM.errorMsg.textContent = "Loading...";
+
+    try {
+        // Current weather
+        const resWeather = await fetch(`${WEATHER_URL}?q=${encodeURIComponent(city)},SE&units=metric&appid=${API_KEY}`);
+        if (!resWeather.ok) {
+            if (resWeather.status === 404) throw new Error(`City "${city}" not found`);
+            if (resWeather.status === 401) throw new Error("Invalid API key");
+            throw new Error("Server error, please try again later");
+        }
+        const dataWeather = await resWeather.json();
+        displayWeather(dataWeather);
+
+        // 3-day forecast
+        const resForecast = await fetch(`${FORECAST_URL}?q=${encodeURIComponent(city)},SE&units=metric&appid=${API_KEY}`);
+        if (!resForecast.ok) throw new Error("Forecast not available");
+        const dataForecast = await resForecast.json();
+        displayForecast(dataForecast);
+
+    } catch (err) {
+        showError(err.message);
+    }
+};

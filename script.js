@@ -74,7 +74,7 @@ const getWeather = async (city) => {
     }
 };
 
- 
+
 
 // FAVORITES FUNCTIONS   
 
@@ -98,33 +98,33 @@ const removeFromFavorites = (city) => {
 const renderFavorites = () => {
     const favorites = loadFavoritesFromStorage();
     DOM.favList.innerHTML = "";
- 
+
     favorites.forEach(city => {
         const li = document.createElement("li");
         li.classList.add("fav-item");
- 
+
         const span = document.createElement("span");
         span.textContent = city;
- 
+
         const btnContainer = document.createElement("div");
         btnContainer.classList.add("fav-buttons");
- 
+
         const viewBtn = document.createElement("button");
         viewBtn.textContent = "View";
         viewBtn.classList.add("view-btn");
         viewBtn.addEventListener("click", () => getWeather(city));
- 
+
         const deleteBtn = document.createElement("button");
         deleteBtn.textContent = "X";
         deleteBtn.classList.add("delete-btn");
         deleteBtn.addEventListener("click", () => removeFromFavorites(city));
- 
+
         btnContainer.appendChild(viewBtn);
         btnContainer.appendChild(deleteBtn);
- 
+
         li.appendChild(span);
         li.appendChild(btnContainer);
- 
+
         DOM.favList.appendChild(li);
     });
 };

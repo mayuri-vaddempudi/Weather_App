@@ -74,7 +74,19 @@ const getWeather = async (city) => {
     }
 };
 
-
+ 
+// =====================
+// FAVORITES FUNCTIONS       Suneetha
+// =====================
+const addToFavorites = (city) => {
+    if (!city) return;
+    const favorites = loadFavoritesFromStorage();
+    if (!favorites.includes(city)) {
+        favorites.push(city);
+        saveFavorites(favorites);
+        renderFavorites();
+    }
+};
 
 // EVENT LISTENERS
 

@@ -22,3 +22,23 @@ const DOM = {
     forecastContainer: document.getElementById("forecastContainer"),
     body: document.body
 };
+
+// UTILITIES    
+
+const showError = (msg) => {
+    DOM.errorMsg.textContent = `❌ ${msg}`;
+    DOM.weatherBox.classList.add("hidden");
+    DOM.forecastBox.classList.add("hidden");
+};
+
+const clearError = () => {
+    DOM.errorMsg.textContent = "";
+};
+
+const saveFavorites = (favorites) => {
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+};
+
+const loadFavoritesFromStorage = () => {
+    return JSON.parse(localStorage.getItem("favorites")) || [];
+};

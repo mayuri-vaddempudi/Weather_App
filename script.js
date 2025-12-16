@@ -75,7 +75,80 @@ const getWeather = async (city) => {
 };
 
 
+const displayWeather = (data) => {
+    DOM.cityName.textContent = data.name;
 
+    // Round numbers for better readability
+    const temp = Math.round(data.main.temp);
+    const humidity = data.main.humidity;
+    const windSpeed = Math.round(data.wind.speed);
+    const condition = data.weather[0].description;
+
+    // Capitalize condition
+    const formattedCondition = condition
+        .split(' ')
+        .map(word => word[0].toUpperCase() + word.slice(1))
+        .join(' ');
+
+    DOM.temperature.textContent = `Temperature: ${temp}°C`;
+    DOM.humidity.textContent = `Humidity: ${humidity}%`;
+    DOM.wind.textContent = `Wind: ${windSpeed} m/s`;
+    DOM.condition.textContent = `Condition: ${formattedCondition}`;
+
+    const iconCode = data.weather[0].icon;
+    DOM.weatherIcon.src = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+    DOM.weatherIcon.alt = formattedCondition;
+
+    setBackground(data.weather[0].main);
+
+    DOM.weatherBox.classList.remove("hidden");
+    clearError();
+};
+
+
+const displayForecast = (data) => {
+    DOM.forecastContainer.innerHTML = "";
+    DOM.forecastBox.classList.remove("hidden");
+
+    // Filter next 3 days, taking forecast at 12:00 each day
+    const forecastMap = {};
+    data.list.forEach(item => {
+        const date = item.dt_txt.split(" ")[0];
+        const time = item.dt_txt.split(" ")[1];
+        if (!forecastMap[date] && time === "12:00:00") {
+            forecastMap[date] = item;
+        }
+    });
+
+    const next3Days = Object.values(forecastMap).slice(0, 3);
+    next3Days.forEach(item => {
+        const card = document.createElement("div");
+        card.classList.add("forecast-card");
+
+        const date = new Date(item.dt_txt);
+        const day = date.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+
+        const icon = document.createElement("img");
+        icon.src = `https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`;
+        icon.alt = item.weather[0].description;
+
+        const temp = document.createElement("p");
+        temp.textContent = `🌡 ${item.main.temp}°C`;
+
+        const cond = document.createElement("p");
+        cond.textContent = item.weather[0].description;
+
+        const dayEl = document.createElement("p");
+        dayEl.textContent = day;
+
+        card.appendChild(dayEl);
+        card.appendChild(icon);
+        card.appendChild(temp);
+        card.appendChild(cond);
+
+        DOM.forecastContainer.appendChild(card);
+    });
+};
 // FAVORITES FUNCTIONS   
 
 const addToFavorites = (city) => {
@@ -132,6 +205,6 @@ const renderFavorites = () => {
 // EVENT LISTENERS
 
 DOM.searchBtn.addEventListener("click", () => getWeather(DOM.cityInput.value.trim()));
-DOM.cityInput.addEventListener("keypress", (e) => { if (e.key === "Enter") DOM.searchBtn.click(); });  
-DOM.favBtn.addEventListener("click", () => addToFavorites(DOM.cityName.textContent));  
+DOM.cityInput.addEventListener("keypress", (e) => { if (e.key === "Enter") DOM.searchBtn.click(); });
+DOM.favBtn.addEventListener("click", () => addToFavorites(DOM.cityName.textContent));
 document.addEventListener("DOMContentLoaded", renderFavorites);  

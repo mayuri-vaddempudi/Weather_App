@@ -74,39 +74,10 @@ const getWeather = async (city) => {
     }
 };
 
-const displayWeather = (data) => {
-    DOM.cityName.textContent = data.name;
+ 
 
-    // Round numbers for better readability
-    const temp = Math.round(data.main.temp);
-    const humidity = data.main.humidity;
-    const windSpeed = Math.round(data.wind.speed);
-    const condition = data.weather[0].description;
+// FAVORITES FUNCTIONS   
 
-    // Capitalize condition
-    const formattedCondition = condition
-        .split(' ')
-        .map(word => word[0].toUpperCase() + word.slice(1))
-        .join(' ');
-
-    DOM.temperature.textContent = `Temperature: ${temp}°C`;
-    DOM.humidity.textContent = `Humidity: ${humidity}%`;
-    DOM.wind.textContent = `Wind: ${windSpeed} m/s`;
-    DOM.condition.textContent = `Condition: ${formattedCondition}`;
-
-    const iconCode = data.weather[0].icon;
-    DOM.weatherIcon.src = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
-    DOM.weatherIcon.alt = formattedCondition;
-
-    setBackground(data.weather[0].main);
-
-    DOM.weatherBox.classList.remove("hidden");
-    clearError();
-};
-
-// =====================
-// FAVORITES FUNCTIONS       Suneetha
-// =====================
 const addToFavorites = (city) => {
     if (!city) return;
     const favorites = loadFavoritesFromStorage();
@@ -122,6 +93,40 @@ const removeFromFavorites = (city) => {
     favorites = favorites.filter(c => c !== city);
     saveFavorites(favorites);
     renderFavorites();
+};
+
+const renderFavorites = () => {
+    const favorites = loadFavoritesFromStorage();
+    DOM.favList.innerHTML = "";
+ 
+    favorites.forEach(city => {
+        const li = document.createElement("li");
+        li.classList.add("fav-item");
+ 
+        const span = document.createElement("span");
+        span.textContent = city;
+ 
+        const btnContainer = document.createElement("div");
+        btnContainer.classList.add("fav-buttons");
+ 
+        const viewBtn = document.createElement("button");
+        viewBtn.textContent = "View";
+        viewBtn.classList.add("view-btn");
+        viewBtn.addEventListener("click", () => getWeather(city));
+ 
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "X";
+        deleteBtn.classList.add("delete-btn");
+        deleteBtn.addEventListener("click", () => removeFromFavorites(city));
+ 
+        btnContainer.appendChild(viewBtn);
+        btnContainer.appendChild(deleteBtn);
+ 
+        li.appendChild(span);
+        li.appendChild(btnContainer);
+ 
+        DOM.favList.appendChild(li);
+    });
 };
 
 // EVENT LISTENERS

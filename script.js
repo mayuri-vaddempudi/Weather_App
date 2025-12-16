@@ -74,7 +74,36 @@ const getWeather = async (city) => {
     }
 };
 
- 
+const displayWeather = (data) => {
+    DOM.cityName.textContent = data.name;
+
+    // Round numbers for better readability
+    const temp = Math.round(data.main.temp);
+    const humidity = data.main.humidity;
+    const windSpeed = Math.round(data.wind.speed);
+    const condition = data.weather[0].description;
+
+    // Capitalize condition
+    const formattedCondition = condition
+        .split(' ')
+        .map(word => word[0].toUpperCase() + word.slice(1))
+        .join(' ');
+
+    DOM.temperature.textContent = `Temperature: ${temp}°C`;
+    DOM.humidity.textContent = `Humidity: ${humidity}%`;
+    DOM.wind.textContent = `Wind: ${windSpeed} m/s`;
+    DOM.condition.textContent = `Condition: ${formattedCondition}`;
+
+    const iconCode = data.weather[0].icon;
+    DOM.weatherIcon.src = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+    DOM.weatherIcon.alt = formattedCondition;
+
+    setBackground(data.weather[0].main);
+
+    DOM.weatherBox.classList.remove("hidden");
+    clearError();
+};
+
 // =====================
 // FAVORITES FUNCTIONS       Suneetha
 // =====================
@@ -98,4 +127,4 @@ const removeFromFavorites = (city) => {
 // EVENT LISTENERS
 
 DOM.searchBtn.addEventListener("click", () => getWeather(DOM.cityInput.value.trim()));
-DOM.cityInput.addEventListener("keypress", (e) => { if (e.key === "Enter") DOM.searchBtn.click(); });   
+DOM.cityInput.addEventListener("keypress", (e) => { if (e.key === "Enter") DOM.searchBtn.click(); });

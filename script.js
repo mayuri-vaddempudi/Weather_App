@@ -74,80 +74,10 @@ const getWeather = async (city) => {
     }
 };
 
-const displayWeather = (data) => {
-    DOM.cityName.textContent = data.name;
 
-    // Round numbers for better readability
-    const temp = Math.round(data.main.temp);
-    const humidity = data.main.humidity;
-    const windSpeed = Math.round(data.wind.speed);
-    const condition = data.weather[0].description;
 
-    // Capitalize condition
-    const formattedCondition = condition
-        .split(' ')
-        .map(word => word[0].toUpperCase() + word.slice(1))
-        .join(' ');
+// FAVORITES FUNCTIONS   
 
-    DOM.temperature.textContent = `Temperature: ${temp}°C`;
-    DOM.humidity.textContent = `Humidity: ${humidity}%`;
-    DOM.wind.textContent = `Wind: ${windSpeed} m/s`;
-    DOM.condition.textContent = `Condition: ${formattedCondition}`;
-
-    const iconCode = data.weather[0].icon;
-    DOM.weatherIcon.src = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
-    DOM.weatherIcon.alt = formattedCondition;
-
-    setBackground(data.weather[0].main);
-
-    DOM.weatherBox.classList.remove("hidden");
-    clearError();
-};
-const displayForecast = (data) => {
-    DOM.forecastContainer.innerHTML = "";
-    DOM.forecastBox.classList.remove("hidden");
-
-    // Filter next 3 days, taking forecast at 12:00 each day
-    const forecastMap = {};
-    data.list.forEach(item => {
-        const date = item.dt_txt.split(" ")[0];
-        const time = item.dt_txt.split(" ")[1];
-        if (!forecastMap[date] && time === "12:00:00") {
-            forecastMap[date] = item;
-        }
-    });
-    const next3Days = Object.values(forecastMap).slice(0, 3);
-    next3Days.forEach(item => {
-        const card = document.createElement("div");
-        card.classList.add("forecast-card");
-
-        const date = new Date(item.dt_txt);
-        const day = date.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
-
-        const icon = document.createElement("img");
-        icon.src = `https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`;
-        icon.alt = item.weather[0].description;
-
-        const temp = document.createElement("p");
-        temp.textContent = `🌡 ${item.main.temp}°C`;
-
-        const cond = document.createElement("p");
-        cond.textContent = item.weather[0].description;
-
-        const dayEl = document.createElement("p");
-        dayEl.textContent = day;
-
-        card.appendChild(dayEl);
-        card.appendChild(icon);
-        card.appendChild(temp);
-        card.appendChild(cond);
-
-        DOM.forecastContainer.appendChild(card);
-    });
-};
-// =====================
-// FAVORITES FUNCTIONS       Suneetha
-// =====================
 const addToFavorites = (city) => {
     if (!city) return;
     const favorites = loadFavoritesFromStorage();
@@ -163,6 +93,40 @@ const removeFromFavorites = (city) => {
     favorites = favorites.filter(c => c !== city);
     saveFavorites(favorites);
     renderFavorites();
+};
+
+const renderFavorites = () => {
+    const favorites = loadFavoritesFromStorage();
+    DOM.favList.innerHTML = "";
+
+    favorites.forEach(city => {
+        const li = document.createElement("li");
+        li.classList.add("fav-item");
+
+        const span = document.createElement("span");
+        span.textContent = city;
+
+        const btnContainer = document.createElement("div");
+        btnContainer.classList.add("fav-buttons");
+
+        const viewBtn = document.createElement("button");
+        viewBtn.textContent = "View";
+        viewBtn.classList.add("view-btn");
+        viewBtn.addEventListener("click", () => getWeather(city));
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "X";
+        deleteBtn.classList.add("delete-btn");
+        deleteBtn.addEventListener("click", () => removeFromFavorites(city));
+
+        btnContainer.appendChild(viewBtn);
+        btnContainer.appendChild(deleteBtn);
+
+        li.appendChild(span);
+        li.appendChild(btnContainer);
+
+        DOM.favList.appendChild(li);
+    });
 };
 
 // EVENT LISTENERS

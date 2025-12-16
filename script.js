@@ -103,7 +103,48 @@ const displayWeather = (data) => {
     DOM.weatherBox.classList.remove("hidden");
     clearError();
 };
+const displayForecast = (data) => {
+    DOM.forecastContainer.innerHTML = "";
+    DOM.forecastBox.classList.remove("hidden");
 
+    // Filter next 3 days, taking forecast at 12:00 each day
+    const forecastMap = {};
+    data.list.forEach(item => {
+        const date = item.dt_txt.split(" ")[0];
+        const time = item.dt_txt.split(" ")[1];
+        if (!forecastMap[date] && time === "12:00:00") {
+            forecastMap[date] = item;
+        }
+    });
+    const next3Days = Object.values(forecastMap).slice(0, 3);
+    next3Days.forEach(item => {
+        const card = document.createElement("div");
+        card.classList.add("forecast-card");
+
+        const date = new Date(item.dt_txt);
+        const day = date.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+
+        const icon = document.createElement("img");
+        icon.src = `https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`;
+        icon.alt = item.weather[0].description;
+
+        const temp = document.createElement("p");
+        temp.textContent = `🌡 ${item.main.temp}°C`;
+
+        const cond = document.createElement("p");
+        cond.textContent = item.weather[0].description;
+
+        const dayEl = document.createElement("p");
+        dayEl.textContent = day;
+
+        card.appendChild(dayEl);
+        card.appendChild(icon);
+        card.appendChild(temp);
+        card.appendChild(cond);
+
+        DOM.forecastContainer.appendChild(card);
+    });
+};
 // =====================
 // FAVORITES FUNCTIONS       Suneetha
 // =====================

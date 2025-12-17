@@ -202,6 +202,22 @@ const renderFavorites = () => {
     });
 };
 
+
+// BACKGROUND    
+
+const setBackground = (weather) => {
+    switch (weather.toLowerCase()) {
+        case "clear": DOM.body.style.background = "linear-gradient(to bottom, #fceabb, #f8b500)"; break;
+        case "clouds": DOM.body.style.background = "linear-gradient(to bottom, #bdc3c7, #2c3e50)"; break;
+        case "rain":
+        case "drizzle": DOM.body.style.background = "linear-gradient(to bottom, #74ebd5, #ACB6E5)"; break;
+        case "thunderstorm": DOM.body.style.background = "linear-gradient(to bottom, #373B44, #4286f4)"; break;
+        case "snow": DOM.body.style.background = "linear-gradient(to bottom, #e0eafc, #cfdef3)"; break;
+        default: DOM.body.style.background = "linear-gradient(to bottom, #87ceeb, #f0f4f8)";
+    }
+};
+ 
+
 // EVENT LISTENERS
 
 DOM.searchBtn.addEventListener("click", () => getWeather(DOM.cityInput.value.trim()));

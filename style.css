@@ -1,3 +1,17 @@
+/* Reset & Base*/
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
+    font-family: Arial, sans-serif;
 }
+ 
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(to bottom, #87ceeb, #f0f4f8);
+    transition: background 0.5s;
+    color: #333;
+}
+ 

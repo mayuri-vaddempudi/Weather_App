@@ -35,3 +35,35 @@ main.container {
     gap: 0.5rem;
     margin-bottom: 1rem;
 }
+
+.search input {
+    flex: 1;
+    padding: 0.5rem;
+    font-size: 1rem;
+}
+ 
+.search button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    background: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+ 
+#errorMsg {
+    color: red;
+    margin-bottom: 1rem;
+}
+ 
+#weatherBox,
+#forecastBox {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+    text-align: center;
+    transition: background 0.5s;
+}

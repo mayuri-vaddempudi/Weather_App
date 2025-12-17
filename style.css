@@ -145,4 +145,24 @@ button#favBtn {
     border-radius: 10px;
     margin-top: 10px;
 }
+ .icon {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
  
+/* Responsive */
+@media(max-width: 500px) {
+    .search {
+        flex-direction: column;
+    }
+ 
+    .search button {
+        width: 100%;
+    }
+ 
+    .forecast-card {
+        width: 100%;
+    }
+}

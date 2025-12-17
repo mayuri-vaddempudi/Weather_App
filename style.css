@@ -140,7 +140,7 @@ main.container {
  
 button#favBtn {
     background-color: red;
-    color: white;
+    color: #fff;
     padding: 10px;
     border-radius: 10px;
     margin-top: 10px;

@@ -1,3 +1,177 @@
+/* Reset & Base*/
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(to bottom, #87ceeb, #f0f4f8);
+    transition: background 0.5s;
+    color: #333;
+
+}
+
+header,
+footer {
+    text-align: center;
+    padding: 1rem;
+    background: #4a90e2;
+    color: white;
+}
+
+main.container {
+    flex: 1;
+    max-width: 700px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    min-width: 350px;
+}
+
+.search {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.search input {
+    flex: 1;
+    padding: 0.5rem;
+    font-size: 1rem;
+}
+
+.search button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    background: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+#errorMsg {
+    color: red;
+    margin-bottom: 1rem;
+}
+
+#weatherBox,
+#forecastBox {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+    text-align: center;
+    transition: background 0.5s;
+}
+
+#weatherBox.hidden,
+#forecastBox.hidden {
+    display: none;
+}
+
+#weatherBox img {
+    width: 80px;
+    height: 80px;
+    margin: 0.5rem 0;
+    background-color: gray;
+    border-radius: 10px;
+}
+
+/* Forecast Cards */
+.forecast-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.forecast-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 0.5rem;
+    width: calc(33% - 0.5rem);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.forecast-card img {
+    width: 50px;
+    height: 50px;
+}
+
+#favList {
+    list-style: none;
+    margin-top: 1.5rem;
+}
+
+.fav-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 1.5rem;
+    margin-bottom: 0.3rem;
+    border-radius: 5px;
+}
+
+.fav-buttons button {
+    margin-left: 0.5rem;
+    padding: 0.2rem 0.5rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.view-btn {
+    background-color: #4a90e2;
+    color: white;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+    color: white;
+}
+
+button#favBtn {
+    background-color: red;
+    color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.icon {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+/* Responsive */
+@media(max-width: 500px) {
+
+    header,
+    footer {
+        min-width: 100%;
+    }
+
+    .search {
+        flex-direction: column;
+    }
+
+    .search button {
+        width: 100%;
+    }
+
+    .forecast-card {
+        width: 100%;
+    }
 }

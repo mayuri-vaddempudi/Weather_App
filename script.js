@@ -20,6 +20,7 @@ const DOM = {
     favList: document.getElementById("favList"),
     forecastBox: document.getElementById("forecastBox"),
     forecastContainer: document.getElementById("forecastContainer"),
+    suggestions: document.getElementById("suggestions"),
     body: document.body
 };
 
@@ -216,11 +217,74 @@ const setBackground = (weather) => {
         default: DOM.body.style.background = "linear-gradient(to bottom, #87ceeb, #f0f4f8)";
     }
 };
- 
+
 
 // EVENT LISTENERS
 
 DOM.searchBtn.addEventListener("click", () => getWeather(DOM.cityInput.value.trim()));
 DOM.cityInput.addEventListener("keypress", (e) => { if (e.key === "Enter") DOM.searchBtn.click(); });
 DOM.favBtn.addEventListener("click", () => addToFavorites(DOM.cityName.textContent));
-document.addEventListener("DOMContentLoaded", renderFavorites);  
+document.addEventListener("DOMContentLoaded", renderFavorites);
+
+
+const GEO_URL = "https://api.openweathermap.org/geo/1.0/direct";
+
+const fetchCitySuggestions = async (query) => {
+    if (query.length < 2) {
+        DOM.suggestions.classList.add("hidden");
+        return;
+    }
+
+    try {
+        const res = await fetch(
+            `${GEO_URL}?q=${encodeURIComponent(query)},SE&limit=5&appid=${API_KEY}`
+        );
+
+        if (!res.ok) return;
+
+        const cities = await res.json();
+        renderSuggestions(cities);
+
+    } catch (err) {
+        DOM.suggestions.classList.add("hidden");
+    }
+};
+
+
+
+const renderSuggestions = (cities) => {
+    DOM.suggestions.innerHTML = "";
+
+    if (cities.length === 0) {
+        DOM.suggestions.classList.add("hidden");
+        return;
+    }
+
+    cities.forEach(city => {
+        const li = document.createElement("li");
+        li.textContent = `${city.name}, ${city.country}`;
+
+        li.addEventListener("click", () => {
+            DOM.cityInput.value = city.name;
+            DOM.suggestions.classList.add("hidden");
+            getWeather(city.name);
+        });
+
+        DOM.suggestions.appendChild(li);
+    });
+
+    DOM.suggestions.classList.remove("hidden");
+};
+
+
+DOM.cityInput.addEventListener("input", (e) => {
+    fetchCitySuggestions(e.target.value.trim());
+});
+
+
+document.addEventListener("click", (e) => {
+    if (!e.target.closest("#cityInput")) {
+        DOM.suggestions.classList.add("hidden");
+    }
+});
+

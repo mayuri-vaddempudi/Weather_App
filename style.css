@@ -42,6 +42,7 @@ main.container {
     flex: 1;
     padding: 0.5rem;
     font-size: 1rem;
+    min-width: 350px;
 }
 
 .search button {
@@ -155,6 +156,32 @@ button#favBtn {
     margin-right: 5px;
 }
 
+.suggestions {
+    list-style: none;
+    position: absolute;
+    background: white;
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    z-index: 10;
+    margin-top: 40px;
+}
+
+.suggestions li {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.suggestions li:hover {
+    background-color: #f0f0f0;
+}
+
+.hidden {
+    display: none;
+}
+
+
 /* Responsive */
 @media(max-width: 500px) {
 
@@ -173,5 +200,9 @@ button#favBtn {
 
     .forecast-card {
         width: 100%;
+    }
+
+    .suggestions {
+        max-width: 320px;
     }
 }
